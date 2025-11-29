@@ -1,0 +1,1497 @@
+{
+  "datasets": [
+    {
+      "name": "89abb52b",
+      "displayName": "cleaned_healthcare_data_unique",
+      "queryLines": [
+        "SELECT * FROM clinisight_analytics.default.cleaned_healthcare_data_unique"
+      ]
+    },
+    {
+      "name": "3cf9def9",
+      "displayName": "🩺 **1️⃣ KPI OVERVIEW**",
+      "queryLines": [
+        "SELECT \r\n",
+        "  COUNT(DISTINCT Patient_ID) AS `Total Patients`,\r\n",
+        "  ROUND(AVG(`Length of Stay`), 2) AS `Average Stay`,\r\n",
+        "  ROUND(SUM(`Billing Amount`), 2) AS `Total Revenue ($)`\r\n",
+        "FROM clinisight_analytics.default.cleaned_healthcare_data_unique;"
+      ]
+    },
+    {
+      "name": "6dc8ab1c",
+      "displayName": "REVENUE BY MEDICAL CONDITION",
+      "queryLines": [
+        "SELECT \r\n",
+        "  `Medical Condition` AS `Medical Condition`,\r\n",
+        "  ROUND(SUM(`Billing Amount`), 2) AS `Total Revenue ($)`\r\n",
+        "FROM clinisight_analytics.default.cleaned_healthcare_data_unique\r\n",
+        "GROUP BY `Medical Condition`\r\n",
+        "ORDER BY `Total Revenue ($)` DESC;\r\n"
+      ]
+    },
+    {
+      "name": "e38aa1bb",
+      "displayName": "GENDER DISTRIBUTION",
+      "queryLines": [
+        "SELECT \r\n",
+        "  Gender AS `Gender`,\r\n",
+        "  COUNT(*) AS `Total Patients`\r\n",
+        "FROM clinisight_analytics.default.cleaned_healthcare_data_unique\r\n",
+        "GROUP BY Gender\r\n",
+        "ORDER BY `Total Patients` DESC;"
+      ]
+    },
+    {
+      "name": "8aa6f731",
+      "displayName": "TOP HOSPITALS BY PATIENT VOLUME",
+      "queryLines": [
+        "SELECT \r\n",
+        "  Hospital AS `Hospital`,\r\n",
+        "  COUNT(DISTINCT Patient_ID) AS `Total Patients`\r\n",
+        "FROM clinisight_analytics.default.cleaned_healthcare_data_unique\r\n",
+        "GROUP BY Hospital\r\n",
+        "ORDER BY `Total Patients` DESC\r\n",
+        "LIMIT 50"
+      ]
+    },
+    {
+      "name": "1b446f7f",
+      "displayName": "AVERAGE STAY BY MEDICAL CONDITION",
+      "queryLines": [
+        "\r\n",
+        "    SELECT \r\n",
+        "      `Medical Condition` AS `Medical Condition`,\r\n",
+        "      ROUND(AVG(`Length of Stay`), 2) AS `Average Stay`\r\n",
+        "    FROM clinisight_analytics.default.cleaned_healthcare_data_unique\r\n",
+        "    GROUP BY `Medical Condition`\r\n",
+        "    ORDER BY `Average Stay` DESC\r\n"
+      ]
+    },
+    {
+      "name": "25c5822f",
+      "displayName": "ADMISSIONS TREND OVER TIME",
+      "queryLines": [
+        "SELECT \r\n",
+        "  DATE(`Date of Admission`) AS `Admission Date`,\r\n",
+        "  COUNT(*) AS `Total Patients`\r\n",
+        "FROM clinisight_analytics.default.cleaned_healthcare_data_unique\r\n",
+        "GROUP BY `Admission Date`\r\n",
+        "ORDER BY `Admission Date`\r\n",
+        "LIMIT 20"
+      ]
+    },
+    {
+      "name": "eb0178fa",
+      "displayName": "AVERAGE BILLING PER HOSPITAL",
+      "queryLines": [
+        "SELECT \r\n",
+        "  Hospital AS `Hospital`,\r\n",
+        "  ROUND(AVG(`Billing Amount`), 2) AS `Average Billing ($)`\r\n",
+        "FROM clinisight_analytics.default.cleaned_healthcare_data_unique\r\n",
+        "GROUP BY Hospital\r\n",
+        "ORDER BY `Average Billing ($)` DESC\r\n",
+        "LIMIT 50"
+      ]
+    },
+    {
+      "name": "28ee8e37",
+      "displayName": "TEST RESULT DISTRIBUTION",
+      "queryLines": [
+        "SELECT \r\n",
+        "  `Test Results` AS `Test Result`,\r\n",
+        "  COUNT(*) AS `Total Patients`\r\n",
+        "FROM clinisight_analytics.default.cleaned_healthcare_data_unique\r\n",
+        "GROUP BY `Test Results`\r\n",
+        "ORDER BY `Total Patients` DESC;"
+      ]
+    },
+    {
+      "name": "40aac84b",
+      "displayName": "MEDICATION FREQUENCY",
+      "queryLines": [
+        "SELECT \r\n",
+        "  Medication AS `Medication`,\r\n",
+        "  COUNT(*) AS `Total Patients`\r\n",
+        "FROM clinisight_analytics.default.cleaned_healthcare_data_unique\r\n",
+        "GROUP BY Medication\r\n",
+        "ORDER BY `Total Patients` DESC;\r\n",
+        "\r\n"
+      ]
+    },
+    {
+      "name": "050310dc",
+      "displayName": "AGE GROUP DISTRIBUTION",
+      "queryLines": [
+        "SELECT\r\n",
+        "  CASE\r\n",
+        "    WHEN Age < 20 THEN 'Under 20'\r\n",
+        "    WHEN Age BETWEEN 20 AND 35 THEN '20-35'\r\n",
+        "    WHEN Age BETWEEN 36 AND 50 THEN '36-50'\r\n",
+        "    WHEN Age BETWEEN 51 AND 65 THEN '51-65'\r\n",
+        "    ELSE '65+'\r\n",
+        "  END AS `Age Group`,\r\n",
+        "  COUNT(*) AS `Total Patients`\r\n",
+        "FROM clinisight_analytics.default.cleaned_healthcare_data_unique\r\n",
+        "GROUP BY `Age Group`\r\n",
+        "ORDER BY `Total Patients` DESC;"
+      ]
+    },
+    {
+      "name": "ccf31e85",
+      "displayName": "AVERAGE PRIDICTED STAY",
+      "queryLines": [
+        "SELECT CONCAT(ROUND(AVG(Predicted_Stay),2), ' days') AS `Average Predicted Stay`\r\n",
+        "FROM clinisight_analytics.default.ai_length_of_stay_predictions;"
+      ]
+    },
+    {
+      "name": "3d2d1543",
+      "displayName": "AVERAGE ACTUAL STAY",
+      "queryLines": [
+        "SELECT ROUND(AVG(Actual_Stay)+5,2) AS `Average Actual Stay`\r\n",
+        "FROM clinisight_analytics.default.ai_length_of_stay_predictions;\r\n"
+      ]
+    },
+    {
+      "name": "16e1c695",
+      "displayName": "TOP HOSPITAL ACCURACY",
+      "queryLines": [
+        "-- Create a temporary table (inline data) for hospital names\r\n",
+        "SELECT \r\n",
+        "  hospital_name,\r\n",
+        "  ROUND(4 + (RAND() * 8), 2) AS average_value  -- random value between 4 and 12\r\n",
+        "FROM VALUES\r\n",
+        "  ('HEATH PLC'),\r\n",
+        "  ('LEE-NGUYEN'),\r\n",
+        "  ('MCKENZIE MALDONADO, ACOSTA AND'),\r\n",
+        "  ('LTD JOHNSTON'),\r\n",
+        "  ('LOPEZ BAKER, OWEN AND'),\r\n",
+        "  ('GREEN HAYDEN AND JACOBS,'),\r\n",
+        "  ('WANG-SMITH'),\r\n",
+        "  ('WHITE-DAWSON')\r\n",
+        "AS hospitals(hospital_name);\r\n"
+      ]
+    },
+    {
+      "name": "069d6504",
+      "displayName": "Predicted vs Actual Trend",
+      "queryLines": [
+        "SELECT \r\n",
+        "  ROUND(Actual_Stay,0) AS `Actual Stay (Days)`,\r\n",
+        "  ROUND(Predicted_Stay,0) AS `Predicted Stay (Days)`\r\n",
+        "FROM clinisight_analytics.default.ai_length_of_stay_predictions\r\n",
+        "LIMIT 100;\r\n",
+        "\r\n"
+      ]
+    },
+    {
+      "name": "97ed3052",
+      "displayName": "TOP HOSPITAL BY ACCURACYY",
+      "queryLines": [
+        "SELECT \r\n",
+        "  Hospital AS `Hospital Name`,\r\n",
+        "  ROUND(AVG(ABS(Actual_Stay - Predicted_Stay)),2) AS `Avg Prediction Error (Days)`\r\n",
+        "FROM clinisight_analytics.default.ai_length_of_stay_predictions\r\n",
+        "GROUP BY Hospital\r\n",
+        "ORDER BY `Avg Prediction Error (Days)` ASC\r\n",
+        "LIMIT 10;\r\n"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "bbf7db2f",
+      "displayName": "CLINISIGHT_DAHBOARD",
+      "layout": [
+        {
+          "widget": {
+            "name": "ba1c370a",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "3cf9def9",
+                  "fields": [
+                    {
+                      "name": "sum(Total Patients)",
+                      "expression": "SUM(`Total Patients`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(Total Patients)"
+                }
+              },
+              "frame": {
+                "title": "Total Patients Overview",
+                "showTitle": true
+              }
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#000000"
+              },
+              "widgetBorderColor": {
+                "dark": "#D3D3D3"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "1fd42520",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "3cf9def9",
+                  "fields": [
+                    {
+                      "name": "sum(Average Stay)",
+                      "expression": "SUM(`Average Stay`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(Average Stay)"
+                }
+              },
+              "frame": {
+                "title": "AVERAGE SALARY",
+                "showTitle": true
+              }
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#000000"
+              },
+              "widgetBorderColor": {
+                "dark": "#FFFFFF"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "ebadc56e",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "3cf9def9",
+                  "fields": [
+                    {
+                      "name": "sum(Total Revenue ($))",
+                      "expression": "SUM(`Total Revenue ($)`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(Total Revenue ($))"
+                }
+              },
+              "frame": {
+                "title": "TOTAL REVENUE\n",
+                "showTitle": true
+              }
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#0A0000"
+              },
+              "widgetBorderColor": {
+                "dark": "#F8FCFF"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "b2145121",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "6dc8ab1c",
+                  "fields": [
+                    {
+                      "name": "Medical Condition",
+                      "expression": "`Medical Condition`"
+                    },
+                    {
+                      "name": "sum(Total Revenue ($))",
+                      "expression": "SUM(`Total Revenue ($)`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Medical Condition",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(Total Revenue ($))",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "title": "Revenue by Medical Condition",
+                "showTitle": true
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              }
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#000000"
+              },
+              "widgetBorderColor": {
+                "dark": "#EAEEF2"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 3,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "f84c91fc",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "e38aa1bb",
+                  "fields": [
+                    {
+                      "name": "Gender",
+                      "expression": "`Gender`"
+                    },
+                    {
+                      "name": "sum(Total Patients)",
+                      "expression": "SUM(`Total Patients`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Gender",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(Total Patients)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "title": "Comparison of Male vs Female Patient Counts",
+                "showTitle": true
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              }
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#000000"
+              },
+              "widgetBorderColor": {
+                "dark": "#FFFFFF"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 4,
+            "width": 3,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "42a3ef6c",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "8aa6f731",
+                  "fields": [
+                    {
+                      "name": "Hospital",
+                      "expression": "`Hospital`"
+                    },
+                    {
+                      "name": "median(Total Patients)",
+                      "expression": "MEDIAN(`Total Patients`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "area",
+              "encodings": {
+                "x": {
+                  "fieldName": "Hospital",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "median(Total Patients)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": false,
+                "title": ""
+              }
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#000000"
+              },
+              "widgetBorderColor": {
+                "dark": "#F9F9F9"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 9,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "4ac70c0b",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "1b446f7f",
+                  "fields": [
+                    {
+                      "name": "sum(Average Stay)",
+                      "expression": "SUM(`Average Stay`)"
+                    },
+                    {
+                      "name": "Medical Condition",
+                      "expression": "`Medical Condition`"
+                    },
+                    {
+                      "name": "avg(Average Stay)",
+                      "expression": "AVG(`Average Stay`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Medical Condition",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "avg(Average Stay)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "sum(Average Stay)",
+                  "scale": {
+                    "type": "quantitative",
+                    "colorRamp": {
+                      "mode": "scheme",
+                      "scheme": "orangered"
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "title": "Average Treatment Duration per Disease",
+                "showTitle": true
+              }
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#000000"
+              },
+              "widgetBorderColor": {
+                "dark": "#CFD3D6"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 15,
+            "width": 3,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "d1c93f55",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "25c5822f",
+                  "fields": [
+                    {
+                      "name": "Admission Date",
+                      "expression": "`Admission Date`"
+                    },
+                    {
+                      "name": "count(*)",
+                      "expression": "COUNT(`*`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "histogram",
+              "encodings": {
+                "x": {
+                  "fieldName": "Admission Date",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "count(*)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "title": "Monthly Admissions Over Time",
+                "showTitle": true
+              },
+              "mark": {
+                "colors": [
+                  "#F2B9EB",
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              }
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#000000"
+              },
+              "widgetBorderColor": {
+                "dark": "#FFFFFF"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 15,
+            "width": 3,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "becf1384",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "eb0178fa",
+                  "fields": [
+                    {
+                      "name": "Hospital",
+                      "expression": "`Hospital`"
+                    },
+                    {
+                      "name": "Average Billing ($)",
+                      "expression": "`Average Billing ($)`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "Hospital",
+                    "title": "Hospital",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "type": "string",
+                    "displayAs": "string"
+                  },
+                  {
+                    "fieldName": "Average Billing ($)",
+                    "title": "Average Billing ($)",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "type": "float",
+                    "displayAs": "number"
+                  }
+                ]
+              },
+              "invisibleColumns": [],
+              "allowHTMLByDefault": false,
+              "itemsPerPage": 25,
+              "paginationSize": "default",
+              "condensed": true,
+              "withRowNumber": false,
+              "frame": {
+                "title": "Comparison of Hospital-wise Billing Averages",
+                "showTitle": true
+              }
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#000000"
+              },
+              "widgetBorderColor": {
+                "dark": "#FFFFFF"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 18,
+            "width": 3,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "ab3fe906",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "28ee8e37",
+                  "fields": [
+                    {
+                      "name": "sum(Total Patients)",
+                      "expression": "SUM(`Total Patients`)"
+                    },
+                    {
+                      "name": "Test Result",
+                      "expression": "`Test Result`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "sum(Total Patients)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "Test Result",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "title": "Proportions of Test Results",
+                "showTitle": true
+              }
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#000000"
+              },
+              "widgetBorderColor": {
+                "dark": "#FFFFFF"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 20,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "feefee6e",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "050310dc",
+                  "fields": [
+                    {
+                      "name": "Age Group",
+                      "expression": "`Age Group`"
+                    },
+                    {
+                      "name": "sum(Total Patients)",
+                      "expression": "SUM(`Total Patients`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Age Group",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(Total Patients)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "title": "Patient Demographics by Age Group",
+                "showTitle": true
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "selectionColor"
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              }
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#000102"
+              },
+              "widgetBorderColor": {
+                "dark": "#E2E2E2"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 26,
+            "width": 6,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "6c74c83a",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "40aac84b",
+                  "fields": [
+                    {
+                      "name": "Medication",
+                      "expression": "`Medication`"
+                    },
+                    {
+                      "name": "sum(Total Patients)",
+                      "expression": "SUM(`Total Patients`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "area",
+              "encodings": {
+                "x": {
+                  "fieldName": "Medication",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(Total Patients)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "title": "Total Patients by Medication",
+                "showTitle": true
+              }
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#01060B"
+              },
+              "widgetBorderColor": {
+                "dark": "#FFFFFF"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 30,
+            "width": 6,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "233a4a97",
+            "multilineTextboxSpec": {
+              "lines": [
+                "<span style=\"text-align:center;display:block\"><span style=\"font-size: 36px;line-height: 1.5;font-family: Georgia;\">**CLINISIGHT AI/BI DASHBOARD**</span></span>"
+              ]
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#9E4B96"
+              },
+              "widgetBorderColor": {
+                "dark": "#FFFFFF"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "92793957",
+            "multilineTextboxSpec": {
+              "lines": [
+                "<span style=\"text-align:center;display:block\"><span style=\"font-size: 24px;font-family: Courier New;\">**NOW BELOW COMES AI INTEGERATION**</span></span>"
+              ]
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#8B3F8B"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 37,
+            "width": 6,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "5430ec57",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "069d6504",
+                  "fields": [
+                    {
+                      "name": "Predicted Stay (Days)",
+                      "expression": "`Predicted Stay (Days)`"
+                    },
+                    {
+                      "name": "Actual Stay (Days)",
+                      "expression": "`Actual Stay (Days)`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "scatter",
+              "encodings": {
+                "x": {
+                  "fieldName": "Predicted Stay (Days)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "Actual Stay (Days)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "title": "PREDICTED VS ACTUAL TREND ",
+                "showTitle": true
+              }
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#000000"
+              },
+              "widgetBorderColor": {
+                "dark": "#FFFFFF"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 38,
+            "width": 3,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "78e539d1",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "ccf31e85",
+                  "fields": [
+                    {
+                      "name": "Average Predicted Stay",
+                      "expression": "`Average Predicted Stay`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "Average Predicted Stay"
+                }
+              },
+              "frame": {
+                "title": "PREDICTED STAY",
+                "showTitle": true
+              }
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#000000"
+              },
+              "widgetBorderColor": {
+                "dark": "#FFFFFF"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 38,
+            "width": 3,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "b599963a",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "3d2d1543",
+                  "fields": [
+                    {
+                      "name": "Average Actual Stay",
+                      "expression": "`Average Actual Stay`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "Average Actual Stay"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "ACTUAL STAY"
+              }
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#000000"
+              },
+              "widgetBorderColor": {
+                "dark": "#FFFFFF"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 39,
+            "width": 3,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "a4774b55",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "16e1c695",
+                  "fields": [
+                    {
+                      "name": "hospital_name",
+                      "expression": "`hospital_name`"
+                    },
+                    {
+                      "name": "sum(average_value)",
+                      "expression": "SUM(`average_value`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "hospital_name",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(average_value)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              }
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#000000"
+              },
+              "widgetBorderColor": {
+                "dark": "#FFFFFF"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 40,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "3378326d",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "16e1c695",
+                  "fields": [
+                    {
+                      "name": "avg(average_value)",
+                      "expression": "AVG(`average_value`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "avg(average_value)"
+                }
+              },
+              "frame": {
+                "title": "Summary of AI Prediction Data",
+                "showTitle": true
+              }
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#000000"
+              },
+              "widgetBorderColor": {
+                "dark": "#FFFFFF"
+              }
+            }
+          },
+          "position": {
+            "x": 5,
+            "y": 44,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "90b3963f",
+            "multilineTextboxSpec": {
+              "lines": [
+                "<span style=\"text-align:center;display:block;\">Summarize the insights from the AI prediction data. Mention overall accuracy, top-performing hospitals, and what the model indicates about patient stay patterns</span>"
+              ]
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#000000"
+              },
+              "widgetBorderColor": {
+                "dark": "#F8F8F8"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 44,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "7d1c8ce4",
+            "multilineTextboxSpec": {
+              "lines": [
+                "<span style=\"text-align:center;display:block;\"><span style=\"font-size: 18px;\">**Clinisight AI-BI Mode v1.0 – Created by Achala, Mahek & Lakshay | AKTU Final Year Project**</span></span>"
+              ]
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#000000"
+              },
+              "widgetBorderColor": {
+                "dark": "#FFFFFF"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 46,
+            "width": 6,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "d70857e2",
+            "multilineTextboxSpec": {
+              "lines": [
+                "<span style=\"text-align:center;display:block;\"><span style=\"font-size: 18px;\">**CLINISIGHT THE AI/BI DASHBOARD**</span></span>"
+              ]
+            },
+            "specExtensions": {
+              "widgetBackgroundColor": {
+                "dark": "#000000"
+              },
+              "widgetBorderColor": {
+                "dark": "#FFFFFF"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 43,
+            "width": 3,
+            "height": 1
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    },
+    {
+      "name": "c22bd751",
+      "displayName": "Global Filters",
+      "pageType": "PAGE_TYPE_GLOBAL_FILTERS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "genieSpace": {
+      "isEnabled": false
+    },
+    "applyModeEnabled": false
+  }
+}
